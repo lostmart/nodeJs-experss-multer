@@ -1,11 +1,16 @@
 const upload = require("./multerConfig")
 
 exports.handlePost = (req, res) => {
-	upload.single("images", 3)(req, res, (err) => {
+	upload.array("images", 3)(req, res, (err) => {
+		/* if there is any error  */
 		if (err) {
 			if (err.code === "LIMIT_FILE_SIZE") {
 				return res.status(400).json({
 					msg: "file too big",
+				})
+			} else if ((err.Error = "Only jpeg, jpg and png files accepted !")) {
+				return res.status(400).json({
+					msg: err.Error,
 				})
 			} else {
 				return res.status(500).json({
@@ -13,27 +18,14 @@ exports.handlePost = (req, res) => {
 				})
 			}
 		}
-
-		const image = req.file.filename
 		const protocol = req.protocol
-		const imageUrl = `${protocol}://${req.headers.host}/images/${image}`
+
+		const images = req.files.map((img) => {
+			return `${protocol}://${req.headers.host}/images/${img.filename}`
+		})
 		res.status(201).json({
-			msg: "Image updloaded",
-			image: imageUrl,
+			msg: "Succesufully uploaded",
+			images,
 		})
 	})
 }
-
-// (req, res, function (err) {
-//             if (err instanceof multer.MulterError) {
-//                 // A Multer error occurred when uploading.
-//                 if (err.code === "LIMIT_FILE_SIZE") {
-//                     return res.status(400).send("File size exceeds the limit (5 MB).")
-//                 }
-//                 return res.status(500).send("Internal Server Error")
-//             }
-
-//             // Files are stored in the 'images' directory
-//             // Access them using req.files
-//             res.send("Images uploaded successfully!")
-//         })
