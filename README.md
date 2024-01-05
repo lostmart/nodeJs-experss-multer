@@ -11,5 +11,5 @@
 # Installation
 
 Run the npm install to install all the dependencies <br>
-then ** MANUALLY create a directory called "images" ** <br>
+then **MANUALLY create a directory called "images"** <br>
 otherwise the server will throw an error
