@@ -12,4 +12,4 @@
 
 Run the npm install to install all the dependencies <br>
 then **MANUALLY create a directory called "images"** <br>
-otherwise the server will throw an error
+otherwise the server will throw an error `can't find dierctory called 'images' `
